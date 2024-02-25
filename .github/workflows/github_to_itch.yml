@@ -26,55 +26,6 @@ jobs:
      token: ${{ secrets.GITHUB_TOKEN }}
      expire-in: 1hr
 
- DownloadLibs:
-    name: ${{ matrix.name }}
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - name: Windows Release Compilation
-            os: "windows-2022"
-            platform: windows
-            target: template_release
-            artifact-extension: dll
-            additional-python-packages: pywin32
-            fmod-executable-suffix: win-installer.exe
-            shell: pwsh
-
-          - name: Ubuntu Release Compilation
-            os: "ubuntu-20.04"
-            platform: linux
-            target: template_release
-            artifact-extension: so
-            fmod-executable-suffix: linux.tar.gz
-            shell: bash
-
-          - name: MacOS Release Compilation
-            os: "macos-11"
-            platform: macos
-            target: template_release
-            artifact-extension: framework
-            fmod-executable-suffix: osx.dmg
-            shell: bash
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Download fmod libs
-        uses: ./.github/actions/get_fmod
-        with:
-          platform: ${{ matrix.platform }}
-          target: ${{ matrix.target }}
-          artifact-extension: ${{ matrix.artifact-extension }}
-          additional-python-packages: ${{ matrix.additional-python-packages }}
-          flags: ${{ matrix.flags }}
-          fmod-executable-suffix: ${{ matrix.fmod-executable-suffix }}
-          fmod-user: ${{ secrets.FMODUSER }}
-          fmod-password: ${{ secrets.FMODPASS }}
-          shell: ${{ matrix.shell }}
-
  Export:
   needs: CleanArtifacts # wait for artifacts to clean before making a new one
   runs-on: ubuntu-latest
@@ -99,26 +50,18 @@ jobs:
      mkdir -p ~/.local/share/godot/export_templates/4.2.1.stable
      mv ./templates/* ~/.local/share/godot/export_templates/4.2.1.stable
 
-  - name: Download windows libraries
-    uses: actions/download-artifact@v3
+  - name: release-downloader
+    uses: robinraju/release-downloader@v1.9
     with:
-      name: windows
-      path: addons/fmod/libs/windows/
-
-  - name: Download macos libraries
-    uses: actions/download-artifact@v3
-    with:
-      name: macos
-      path: addons/fmod/libs/macos/
-  
-  - name: Download linux libraries
-    uses: actions/download-artifact@v3
-    with:
-      name: linux
-      path: addons/fmod/libs/linux/
+      repository: "utopia-rise/fmod-gdextension"
+      tag: "4.1.0-4.2.0"
+      fileName: "addons.zip"
 
   - name: Export Windows Desktop
     run: |
+     pwd
+     ls -lah
+     ls addons
      mkdir -p ./bin
      ./godot --headless --path ./ --export-release "Windows Desktop" ./bin/The Forgotten.exe
     

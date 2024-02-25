@@ -48,10 +48,41 @@ jobs:
      mkdir -p ~/.local/share/godot/export_templates/4.2.1.stable
      mv ./templates/* ~/.local/share/godot/export_templates/4.2.1.stable
   
+  - name: Compile native plugin
+    uses: ./.github/actions/get_fmod
+    with:
+      platform: ${{ matrix.platform }}
+      target: ${{ matrix.target }}
+      artifact-extension: ${{ matrix.artifact-extension }}
+      additional-python-packages: ${{ matrix.additional-python-packages }}
+      flags: ${{ matrix.flags }}
+      fmod-executable-suffix: ${{ matrix.fmod-executable-suffix }}
+      fmod-user: ${{ secrets.FMODUSER }}
+      fmod-password: ${{ secrets.FMODPASS }}
+      shell: ${{ matrix.shell }}
+
+  - name: Download windows libraries
+    uses: actions/download-artifact@v3
+    with:
+      name: windows
+      path: addons/fmod/libs/windows/
+
+  - name: Download macos libraries
+    uses: actions/download-artifact@v3
+    with:
+      name: macos
+      path: addons/fmod/libs/macos/
+  
+  - name: Download linux libraries
+    uses: actions/download-artifact@v3
+    with:
+      name: linux
+      path: addons/fmod/libs/linux/
+
   - name: Export Windows Desktop
     run: |
-     mkdir -p ./
-     ./godot --headless --path ./ --export-release "Windows Desktop" ./
+     mkdir -p ./bin
+     ./godot --headless --path ./ --export-release "Windows Desktop" ./bin/The Forgotten.exe
     
   - name: Export macOS
     run: |
@@ -144,7 +175,7 @@ jobs:
       run: ./butler login
     
     - name: Push Windows Desktop to Itch
-      run: ./butler push ./ mindlessruff/the-forgotten:win --userversion-file ./VERSION/VERSION.txt
+      run: ./butler push ./bin mindlessruff/the-forgotten:win --userversion-file ./VERSION/VERSION.txt
     
     - name: Push macOS to Itch
       run: ./butler push ./ mindlessruff/the-forgotten:mac --userversion-file ./VERSION/VERSION.txt

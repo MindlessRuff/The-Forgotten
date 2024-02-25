@@ -41,7 +41,7 @@ runs:
       shell: ${{ inputs.shell }}
       run: |
         python -c "import sys; print(sys.version)"
-        python -m pip install requests
+        python -m pip install scons requests ${{ inputs.additional-python-packages }}
         python --version
 
     - name: Installing FMOD on Windows

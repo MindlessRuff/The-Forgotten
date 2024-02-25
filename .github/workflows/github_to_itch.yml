@@ -26,6 +26,7 @@ jobs:
           lfs: true
       - name: Setup
         run: |
+          ls -lah addons/fmod/libs/windows
           mkdir -v -p ~/.local/share/godot/export_templates/
           mv /root/.local/share/godot/export_templates/${GODOT_VERSION}.stable ~/.local/share/godot/export_templates/${GODOT_VERSION}.stable
       - name: release-downloader
@@ -34,6 +35,7 @@ jobs:
           repository: "utopia-rise/fmod-gdextension"
           tag: "4.1.0-4.2.0"
           fileName: "addons.zip"
+          extract: true
       - name: Windows Build
         run: |
           mkdir -v -p build/windows
@@ -63,7 +65,8 @@ jobs:
         with:
           repository: "utopia-rise/fmod-gdextension"
           tag: "4.1.0-4.2.0"
-          fileName: "addons.zip"          
+          fileName: "addons.zip"
+          extract: true  
       - name: Linux Build
         run: |
           mkdir -v -p build/linux
@@ -93,7 +96,8 @@ jobs:
         with:
           repository: "utopia-rise/fmod-gdextension"
           tag: "4.1.0-4.2.0"
-          fileName: "addons.zip"   
+          fileName: "addons.zip"
+          extract: true
       - name: Mac Build
         run: |
           mkdir -v -p build/mac

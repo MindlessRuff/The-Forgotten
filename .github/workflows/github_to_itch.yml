@@ -48,10 +48,20 @@ jobs:
      mkdir -p ~/.local/share/godot/export_templates/4.2.1.stable
      mv ./templates/* ~/.local/share/godot/export_templates/4.2.1.stable
   
-  - name: Export Web
+  - name: Export Windows Desktop
     run: |
      mkdir -p ./
-     ./godot --headless --path ./ --export-release "Web" ./
+     ./godot --headless --path ./ --export-release "Windows Desktop" ./
+    
+  - name: Export macOS
+    run: |
+     mkdir -p ./
+     ./godot --headless --path ./ --export-release "macOS" ./
+    
+  - name: Export Linux/X11
+    run: |
+     mkdir -p ./
+     ./godot --headless --path ./ --export-release "Linux/X11" ./
     
 
   - uses: actions/upload-artifact@v2
@@ -132,6 +142,15 @@ jobs:
     
     - name: Login To Butler
       run: ./butler login
+    
+    - name: Push Windows Desktop to Itch
+      run: ./butler push ./ mindlessruff/the-forgotten:win --userversion-file ./VERSION/VERSION.txt
+    
+    - name: Push macOS to Itch
+      run: ./butler push ./ mindlessruff/the-forgotten:mac --userversion-file ./VERSION/VERSION.txt
+    
+    - name: Push Linux/X11 to Itch
+      run: ./butler push ./ mindlessruff/the-forgotten:linux --userversion-file ./VERSION/VERSION.txt
     
 
  Cleanup:

@@ -15,6 +15,7 @@ env:
  PROJECT_NAME: "The Forgotten"
 
 jobs:
+
  CleanArtifacts:
   # This job clears out the previous artifacts made so you don't run out of space in your github account
   runs-on: ubuntu-latest
@@ -23,6 +24,51 @@ jobs:
     with:
      token: ${{ secrets.GITHUB_TOKEN }}
      expire-in: 1hr
+
+  DownloadLibs:
+    name: ${{ matrix.name }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: Windows Release Compilation
+            os: "windows-2022"
+            platform: windows
+            target: template_release
+            artifact-extension: dll
+            additional-python-packages: pywin32
+            fmod-executable-suffix: win-installer.exe
+            shell: pwsh
+
+          - name: Ubuntu Release Compilation
+            os: "ubuntu-20.04"
+            platform: linux
+            target: template_release
+            artifact-extension: so
+            fmod-executable-suffix: linux.tar.gz
+            shell: bash
+
+          - name: MacOS Release Compilation
+            os: "macos-11"
+            platform: macos
+            target: template_release
+            artifact-extension: framework
+            fmod-executable-suffix: osx.dmg
+            shell: bash
+    
+    - name: Download fmod libs
+      uses: ./.github/actions/get_fmod
+      with:
+        platform: ${{ matrix.platform }}
+        target: ${{ matrix.target }}
+        artifact-extension: ${{ matrix.artifact-extension }}
+        additional-python-packages: ${{ matrix.additional-python-packages }}
+        flags: ${{ matrix.flags }}
+        fmod-executable-suffix: ${{ matrix.fmod-executable-suffix }}
+        fmod-user: ${{ secrets.FMODUSER }}
+        fmod-password: ${{ secrets.FMODPASS }}
+        shell: ${{ matrix.shell }}
 
  Export:
   needs: CleanArtifacts # wait for artifacts to clean before making a new one
@@ -47,19 +93,6 @@ jobs:
     run: |
      mkdir -p ~/.local/share/godot/export_templates/4.2.1.stable
      mv ./templates/* ~/.local/share/godot/export_templates/4.2.1.stable
-  
-  - name: Compile native plugin
-    uses: ./.github/actions/get_fmod
-    with:
-      platform: ${{ matrix.platform }}
-      target: ${{ matrix.target }}
-      artifact-extension: ${{ matrix.artifact-extension }}
-      additional-python-packages: ${{ matrix.additional-python-packages }}
-      flags: ${{ matrix.flags }}
-      fmod-executable-suffix: ${{ matrix.fmod-executable-suffix }}
-      fmod-user: ${{ secrets.FMODUSER }}
-      fmod-password: ${{ secrets.FMODPASS }}
-      shell: ${{ matrix.shell }}
 
   - name: Download windows libraries
     uses: actions/download-artifact@v3

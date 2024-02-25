@@ -13,6 +13,7 @@ env:
  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
  IS_MAIN: ${{ contains(github.ref, 'main') }}
  PROJECT_NAME: "The Forgotten"
+ FMOD_VERSION: 20212
 
 jobs:
 
@@ -60,7 +61,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-        
+
       - name: Download fmod libs
         uses: ./.github/actions/get_fmod
         with:

@@ -1,7 +1,7 @@
 [gd_scene load_steps=19 format=3 uid="uid://clo08muxcwc4o"]
 
 [ext_resource type="PackedScene" uid="uid://duwl5sldekn2r" path="res://scenes/Enemy.tscn" id="1_cgsu8"]
-[ext_resource type="Script" path="res://scripts/blob.gd" id="2_gvefa"]
+[ext_resource type="Script" path="res://scripts/blob.gd" id="2_y8cip"]
 [ext_resource type="Texture2D" uid="uid://dxs12cbudrsbb" path="res://art/enemy/Blob.png" id="3_aa0a7"]
 [ext_resource type="Texture2D" uid="uid://xijyrw7il51k" path="res://art/enemy/Blob_n.png" id="4_a22o2"]
 [ext_resource type="PackedScene" uid="uid://bvxg5kctr4jyl" path="res://scenes/StateMachine.tscn" id="5_mmqxe"]
@@ -101,8 +101,7 @@ normal_texture = ExtResource("4_a22o2")
 
 [node name="Blob" groups=["Blob", "Enemy"] instance=ExtResource("1_cgsu8")]
 collision_layer = 2
-script = ExtResource("2_gvefa")
-lunge_speed = 100
+script = ExtResource("2_y8cip")
 
 [node name="Hitbox" parent="." index="2"]
 visible = false

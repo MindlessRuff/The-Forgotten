@@ -15,6 +15,8 @@ func _ready():
 		GlobalState.disclaimer = true
 		await get_tree().create_timer(7).timeout
 		animation_player.play("fade_in")
+	else:
+		texture_rect.hide()
 	if not GlobalState.playing: 
 		SoundManager.play_main_loop(SoundManager.MAIN_LOOP_INTRO)
 		GlobalState.playing = true

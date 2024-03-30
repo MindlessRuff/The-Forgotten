@@ -14,7 +14,9 @@ var encounter3 = false
 var encounter4 = false
 
 var encounter6 = false
+var keycard1 = false
 var boss_encounter = false
+var boss_respawn = false
 
 var dialogue1 = false
 var dialogue2 = false

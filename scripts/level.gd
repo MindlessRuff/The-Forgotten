@@ -20,6 +20,11 @@ enum { PROLOGUE, LEVEL_1 }
 @onready var glitch = $Glitch
 @onready var medkit_spawn = $MedkitSpawn
 @onready var checkpoint_one = $Checkpoint
+@onready var node_2d_8 = $Node2D8
+@onready var web_12 = $WEB12
+@onready var node_2d_9 = $Node2D9
+@onready var web_11 = $WEB11
+@onready var note_6 = $Environment/Interactable/Note6
 
 
 var PlayerScene: PackedScene = preload("res://scenes/Player.tscn")
@@ -267,7 +272,22 @@ func _on_event_5_body_exited(body):
 
 
 func _on_boss_event_body_exited(body):
-	if body is Player and not GlobalState.boss_encounter:
+	if body is Player and not GlobalState.boss_encounter and GlobalState.boss_respawn:
+		var boss_door = get_tree().get_first_node_in_group("boss_door")
+		boss_door.locked = true
+		get_tree().call_group("boss", "turn_on")
+		medkit = medkitScene.instantiate()
+		medkit.global_position = medkit_spawn.global_position
+		var items = get_tree().get_first_node_in_group("Item")
+		items.add_child(medkit)
+		GlobalState.boss_encounter = true
+		SoundManager.set_main_loop_parameter(SoundManager.COMBAT_LOW)
+		broodMother = broodMotherScene.instantiate()
+		broodMother.global_position = boss_spawn.global_position
+		entities.add_child(broodMother)
+	if body is Player and not GlobalState.boss_encounter and not GlobalState.boss_respawn:
+		await get_tree().create_timer(60).timeout
+		get_tree().call_group("boss", "turn_on")
 		medkit = medkitScene.instantiate()
 		medkit.global_position = medkit_spawn.global_position
 		var items = get_tree().get_first_node_in_group("Item")
@@ -279,6 +299,9 @@ func _on_boss_event_body_exited(body):
 		entities.add_child(broodMother)
 
 func checkpoint():
+	var boss_door = get_tree().get_first_node_in_group("boss_door")
+	boss_door.locked = false
+	GlobalState.boss_respawn = true
 	medkit.queue_free()
 	get_tree().call_group("Enemy", "queue_free")
 	player.global_position = boss_checkpoint.global_position
@@ -333,3 +356,13 @@ func _on_goo_6_body_exited(body):
 		SoundManager.play_custom_sound(goo6.global_transform, "event:/goo6", 0.9)
 		await get_tree().create_timer(3).timeout
 		goo6.hide_goo()
+
+
+func _on_bridge_body_exited(body):
+	if body is Player:
+		get_tree().call_group("bridge", "turn_on")
+		node_2d_8.show()
+		web_12.show()
+		node_2d_9.show()
+		web_11.show()
+		note_6.show()

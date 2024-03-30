@@ -155,7 +155,7 @@ _data = {
 "default": SubResource("Animation_12rdw")
 }
 
-[node name="BIGG EGG" type="StaticBody2D"]
+[node name="BIGG EGG" type="StaticBody2D" groups=["navigation_polygon_source_group"]]
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="."]
 

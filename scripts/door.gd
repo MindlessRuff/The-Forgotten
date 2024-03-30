@@ -2,6 +2,7 @@ extends StaticBody2D
 
 @export var locked = false 
 @export var bathroom_door = false
+@export var boss_door = false
 @onready var animation_player = $AnimationPlayer
 @onready var timer = $Timer
 @onready var area_2d = $Area2D
@@ -9,15 +10,27 @@ extends StaticBody2D
 var open = false
 
 func open_door():
-	if not open and not locked:
+	if boss_door:
 		open = true
 		animation_player.speed_scale = 1
-		if bathroom_door:
-			animation_player.play("default")
-		else:
+		if GlobalState.keycard1:
 			animation_player.play("opening")
+		else:
+			var player = get_tree().get_first_node_in_group("Player")
+			DialogueManager.start_passive_dialogue(player.global_position, ["Locked..."])
+			return
 		SoundManager.play_custom_sound(global_transform, "event:/door_open", .7)
 		timer.start()
+	else:
+		if not open and not locked:
+			open = true
+			animation_player.speed_scale = 1
+			if bathroom_door:
+				animation_player.play("default")
+			else:
+				animation_player.play("opening")
+			SoundManager.play_custom_sound(global_transform, "event:/door_open", .7)
+			timer.start()
 
 
 func close_door():

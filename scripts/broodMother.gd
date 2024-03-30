@@ -117,6 +117,8 @@ func kill(_splat_direction):
 	hitbox.queue_free()
 	dead.emit()
 	move_sound_timer.stop()
+	await get_tree().create_timer(10).timeout
+	get_tree().change_scene_to_file("res://end.tscn")
 	#queue_free()
 
 

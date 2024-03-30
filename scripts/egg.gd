@@ -1,9 +1,12 @@
 extends Node2D
 
+@export var spawn_spider = true
 var spider_scene: PackedScene = preload("res://scenes/Spider.tscn")
 @onready var animation_player = $AnimationPlayer
 
 func _ready():
+	if not spawn_spider:
+		return
 	animation_player.play("Squish")
 	SoundManager.play_custom_sound(global_transform, "event:/egg_crack", .9)
 	await animation_player.animation_finished

@@ -272,8 +272,8 @@ func _on_event_5_body_exited(body):
 
 
 func _on_boss_event_body_exited(body):
+	var boss_door = get_tree().get_first_node_in_group("boss_door")
 	if body is Player and not GlobalState.boss_encounter and GlobalState.boss_respawn:
-		var boss_door = get_tree().get_first_node_in_group("boss_door")
 		boss_door.locked = true
 		get_tree().call_group("boss", "turn_on")
 		medkit = medkitScene.instantiate()
@@ -286,6 +286,7 @@ func _on_boss_event_body_exited(body):
 		broodMother.global_position = boss_spawn.global_position
 		entities.add_child(broodMother)
 	if body is Player and not GlobalState.boss_encounter and not GlobalState.boss_respawn:
+		boss_door.locked = true
 		await get_tree().create_timer(60).timeout
 		get_tree().call_group("boss", "turn_on")
 		medkit = medkitScene.instantiate()
@@ -297,8 +298,12 @@ func _on_boss_event_body_exited(body):
 		broodMother = broodMotherScene.instantiate()
 		broodMother.global_position = boss_spawn.global_position
 		entities.add_child(broodMother)
-
+func end():
+	get_tree().change_scene_to_file("res://end.tscn")
 func checkpoint():
+	player.can_run = true
+	if is_instance_valid(player.gun):
+		player.gun.reset()
 	var boss_door = get_tree().get_first_node_in_group("boss_door")
 	boss_door.locked = false
 	GlobalState.boss_respawn = true

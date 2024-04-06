@@ -57,7 +57,7 @@ jobs:
   - name: Export macOS
     run: |
      mkdir -p ./bin
-     ./godot --headless --path ./ --export-release "macOS" ./bin/The Forgotten.zip
+     ./godot --headless --path ./ --export-release "macOS" ./bin/The Forgotten_osx.zip
     
   - name: Export Linux/X11
     run: |

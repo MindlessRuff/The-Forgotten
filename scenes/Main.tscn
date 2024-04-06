@@ -49,8 +49,8 @@
 [ext_resource type="PackedScene" uid="uid://cj1c827fjn65u" path="res://scenes/BIGG EGG.tscn" id="41_cmd40"]
 [ext_resource type="PackedScene" uid="uid://limhqhvfnhad" path="res://scenes/BR Door.tscn" id="42_kuoky"]
 [ext_resource type="PackedScene" uid="uid://dyprvfi0cuepe" path="res://scenes/WEB1.tscn" id="43_535tl"]
-[ext_resource type="PackedScene" path="res://scenes/WEB2.tscn" id="44_4iu8q"]
-[ext_resource type="PackedScene" path="res://scenes/WEB3.tscn" id="45_iup20"]
+[ext_resource type="PackedScene" uid="uid://c4cos3p5d2hv3" path="res://scenes/WEB2.tscn" id="44_4iu8q"]
+[ext_resource type="PackedScene" uid="uid://dcybuevkj5ccw" path="res://scenes/WEB3.tscn" id="45_iup20"]
 [ext_resource type="PackedScene" uid="uid://c4va6arsto042" path="res://scenes/Egg.tscn" id="46_jglte"]
 [ext_resource type="PackedScene" uid="uid://d3h08mqrfxlx4" path="res://scenes/deadman.tscn" id="47_3e63x"]
 [ext_resource type="PackedScene" uid="uid://blt12hr0qmvvp" path="res://scenes/john rip.tscn" id="54_22hx3"]
@@ -284,7 +284,6 @@ shader_parameter/outer_radius = 1.0
 script = ExtResource("1_6u7sh")
 
 [node name="underneath" type="Polygon2D" parent="."]
-visible = false
 z_index = -7
 position = Vector2(0, -32)
 color = Color(0, 0, 0, 1)
@@ -321,7 +320,7 @@ rotation = -0.785397
 
 [node name="BlasterItem" parent="Environment/Items" instance=ExtResource("5_bmbqo")]
 material = null
-position = Vector2(-285, 511)
+position = Vector2(-288, 515)
 
 [node name="Medkit" parent="Environment/Items" instance=ExtResource("8_vk42x")]
 position = Vector2(18, 180)
@@ -330,7 +329,7 @@ position = Vector2(18, 180)
 position = Vector2(-386, 511)
 
 [node name="Keycard" parent="Environment/Items" instance=ExtResource("9_5mm25")]
-position = Vector2(-280, -492)
+position = Vector2(-272, -493)
 
 [node name="Inanimate" type="Node2D" parent="Environment" groups=["navigation_polygon_source_group"]]
 
@@ -873,6 +872,8 @@ shape = SubResource("SegmentShape2D_ygoss")
 
 [node name="Bridge" type="Area2D" parent="Triggers"]
 position = Vector2(-361, 97)
+collision_layer = 2
+collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Triggers/Bridge"]
 shape = SubResource("SegmentShape2D_5mjai")
@@ -1156,6 +1157,24 @@ texture = null
 light_texture = ExtResource("5_wy17f")
 light_offset = 0
 
+[node name="Light9" parent="Lights/bridgeLights" groups=["bridge"] instance=ExtResource("4_7cj7q")]
+position = Vector2(870, 58)
+texture = null
+light_texture = ExtResource("5_wy17f")
+light_offset = 0
+
+[node name="Light11" parent="Lights/bridgeLights" groups=["bridge"] instance=ExtResource("4_7cj7q")]
+position = Vector2(671, -85)
+texture = null
+light_texture = ExtResource("5_wy17f")
+light_offset = 0
+
+[node name="Light10" parent="Lights/bridgeLights" groups=["bridge"] instance=ExtResource("4_7cj7q")]
+position = Vector2(702, -382)
+texture = null
+light_texture = ExtResource("5_wy17f")
+light_offset = 0
+
 [node name="Light6" parent="Lights/bridgeLights" groups=["bridge"] instance=ExtResource("4_7cj7q")]
 position = Vector2(975, 99)
 texture = null
@@ -1289,7 +1308,7 @@ grow_vertical = 2
 position = Vector2(41, 12)
 
 [node name="PlayerSpawnLocation" type="Marker2D" parent="."]
-position = Vector2(-656, -18)
+position = Vector2(-660, -21)
 
 [node name="SpiderSpawnLocation" type="Marker2D" parent="."]
 position = Vector2(-857, 198)

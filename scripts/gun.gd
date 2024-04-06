@@ -59,6 +59,10 @@ func _physics_process(_delta):
 			#ray_cast_2d.enabled = false
 
 
+func reset():
+	bullets_in_clip = clip_size
+
+
 func reload():
 	print("reloading")
 	reload_timer.start()

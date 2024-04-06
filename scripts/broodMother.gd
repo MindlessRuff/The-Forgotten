@@ -15,6 +15,7 @@ var egg_scene: PackedScene = preload("res://scenes/Egg.tscn")
 @onready var collision_shape_2d = $CollisionShape2D
 @onready var light = $Light
 
+var end_scene:PackedScene = preload("res://end.tscn")
 var berserk = false
 
 #@onready var line_2d = $Line2D
@@ -118,7 +119,10 @@ func kill(_splat_direction):
 	dead.emit()
 	move_sound_timer.stop()
 	await get_tree().create_timer(10).timeout
-	get_tree().change_scene_to_file("res://end.tscn")
+	SoundManager.stop_main_loop()
+	var main = get_tree().get_first_node_in_group("Main")
+	main.end()
+	#queue_free()
 	#queue_free()
 
 
